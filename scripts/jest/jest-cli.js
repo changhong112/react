@@ -114,7 +114,7 @@ const argv = yargs
       describe:
         'Enable inline source maps when transforming source files with Jest. Useful for debugging, but makes it slower.',
       type: 'boolean',
-      default: false,
+      default: true,
     },
   }).argv;
 

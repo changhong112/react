@@ -51,6 +51,8 @@ const babelOptions = {
     ],
   ],
   retainLines: true,
+  // 确保生成正确的 source maps
+  sourceType: 'unambiguous',
 };
 
 module.exports = {
@@ -93,9 +95,7 @@ module.exports = {
           babelOptions,
           {
             plugins,
-            sourceMaps: process.env.JEST_ENABLE_SOURCE_MAPS
-              ? process.env.JEST_ENABLE_SOURCE_MAPS
-              : false,
+            sourceMaps: 'inline',
           }
         )
       );
