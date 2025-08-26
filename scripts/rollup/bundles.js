@@ -82,6 +82,13 @@ const bundles = [
     minifyWithProdErrorCodes: false,
     wrapWithModuleBoundaries: true,
     externals: ['ReactNativeInternalFeatureFlags'],
+    shouldBundle: true,
+    shouldBundleTypes: [
+      UMD_DEV,
+      UMD_PROD,
+      NODE_DEV,
+      NODE_PROD,
+    ]
   },
 
   /******* Isomorphic Shared Subset *******/
@@ -940,7 +947,14 @@ const bundles = [
     wrapWithModuleBoundaries: false,
     externals: [],
   },
-];
+].filter(bundle => {
+  return bundle.shouldBundle;
+}).map(bundle => {
+  return {
+    ...bundle,
+    bundleTypes: bundle.shouldBundleTypes,
+  };
+});
 
 // Based on deep-freeze by substack (public domain)
 function deepFreeze(o) {

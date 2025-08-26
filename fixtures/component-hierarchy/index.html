@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Component Hierarchy Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .component {
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        .component h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+            font-size: 18px;
+        }
+        .children {
+            margin-left: 20px;
+            border-left: 2px solid #dee2e6;
+            padding-left: 15px;
+        }
+        .debug-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .render-order {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .mount-order {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .unmount-order {
+            background: #53d967;
+            border: 1px solid #53d967;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>React Component Hierarchy Debug</h1>
+
+        <div id="root">
+            <!-- React components will be rendered here -->
+        </div>
+
+        <div class="debug-info">
+            <h4>Component Structure:</h4>
+            <div class="component">
+                <h3>App</h3>
+                <div class="children">
+                    <div class="component">
+                        <h3>Comp1</h3>
+                        <div class="children">
+                            <div class="component">
+                                <h3>Comp3</h3>
+                            </div>
+                            <div class="component">
+                                <h3>Comp4</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <h3>Comp2</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="render-order">
+                <strong>Expected Render Order (top-down):</strong><br>
+                App → Comp1 → Comp3, Comp4 → Comp2
+            </div>
+
+            <div class="mount-order">
+                <strong>Expected Mount Order (bottom-up):</strong><br>
+                Comp3, Comp4 → Comp1 → Comp2 → App
+            </div>
+
+            <div class="unmount-order">
+                <strong>Expected Unmount Order (top-down):</strong><br>
+                App → Comp1 → Comp3, Comp4 → Comp2
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        // Component definitions matching the test structure
+        const Comp4 = React.memo(function Comp4() {
+            const componentName = 'Comp4';
+
+            React.useEffect(() => {
+                console.log('Mount:', componentName);
+                return () => {
+                    console.log('Unmount:', componentName);
+                };
+            }, []);
+
+            console.log('Render:', componentName);
+            return (
+                <h3 style={{
+                    border: '2px solid #28a745',
+                    padding: '10px',
+                    margin: '5px',
+                    borderRadius: '5px',
+                    backgroundColor: '#d4edda'
+                }}>
+                    {componentName}
+                </h3>
+            );
+        });
+
+        const Comp3 = React.memo(function Comp3() {
+            const componentName = 'Comp3';
+
+            React.useEffect(() => {
+                console.log('Mount:', componentName);
+                return () => {
+                    console.log('Unmount:', componentName);
+                };
+            }, []);
+
+            console.log('Render:', componentName);
+            return (
+                <h3 style={{
+                    border: '2px solid #28a745',
+                    padding: '10px',
+                    margin: '5px',
+                    borderRadius: '5px',
+                    backgroundColor: '#d4edda'
+                }}>
+                    {componentName}
+                </h3>
+            );
+        });
+
+        const Comp2 = React.memo(function Comp2() {
+            const componentName = 'Comp2';
+
+            React.useEffect(() => {
+                console.log('Mount:', componentName);
+                return () => {
+                    console.log('Unmount:', componentName);
+                };
+            }, []);
+
+            console.log('Render:', componentName);
+            return (
+                <h3 style={{
+                    border: '2px solid #dc3545',
+                    padding: '10px',
+                    margin: '5px',
+                    borderRadius: '5px',
+                    backgroundColor: '#f8d7da'
+                }}>
+                    {componentName}
+                </h3>
+            );
+        });
+
+        const Comp1 = React.memo(function Comp1() {
+            const componentName = 'Comp1';
+
+            React.useEffect(() => {
+                console.log('Mount:', componentName);
+                return () => {
+                    console.log('Unmount:', componentName);
+                };
+            }, []);
+
+            console.log('Render:', componentName);
+            return (
+                <div style={{
+                    border: '2px solid #007bff',
+                    padding: '15px',
+                    margin: '10px',
+                    borderRadius: '5px',
+                    backgroundColor: '#d1ecf1'
+                }}>
+                    <h3 style={{
+                        border: '2px solid #007bff',
+                        padding: '10px',
+                        margin: '5px',
+                        borderRadius: '5px',
+                        backgroundColor: '#cce7ff'
+                    }}>
+                        {componentName}
+                    </h3>
+                    <Comp3 key="comp3" />
+                    <Comp4 key="comp4" />
+                </div>
+            );
+        });
+
+        const App = React.memo(function App() {
+            const componentName = 'App';
+
+            React.useEffect(() => {
+                console.log('Mount:', componentName);
+                return () => {
+                    console.log('Unmount:', componentName);
+                };
+            }, []);
+
+            console.log('Render:', componentName);
+            return (
+                <div style={{
+                    border: '3px solid #6f42c1',
+                    padding: '20px',
+                    margin: '10px',
+                    borderRadius: '8px',
+                    backgroundColor: '#e2d9f3'
+                }}>
+                    <h3 style={{
+                        border: '2px solid #6f42c1',
+                        padding: '10px',
+                        margin: '5px',
+                        borderRadius: '5px',
+                        backgroundColor: '#d4c5f7'
+                    }}>
+                        {componentName}
+                    </h3>
+                    <Comp1 key="comp1" />
+                    <Comp2 key="comp2" />
+                </div>
+            );
+        });
+
+        // Render the component hierarchy
+        console.log('=== React Component Hierarchy Debug ===');
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

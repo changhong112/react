@@ -49,6 +49,12 @@ const babelOptions = {
       require.resolve('@babel/plugin-transform-block-scoping'),
       {throwIfClosureRequired: false},
     ],
+
+    // Add class transformation support for spread arguments in super()
+    [
+      require.resolve('@babel/plugin-transform-classes'),
+      {loose: false}
+    ],
   ],
   retainLines: true,
   // 确保生成正确的 source maps
